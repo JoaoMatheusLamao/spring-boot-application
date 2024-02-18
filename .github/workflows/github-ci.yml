@@ -9,6 +9,11 @@ jobs:
   create-tag:
     runs-on: ubuntu-latest
     steps:
+      - name: Set up Git
+        run: |
+          git config --global user.email "joaomatheuslamao9@gmail.com"
+          git config --global user.name "JoaoMatheusLamao"
+
       - name: Checkout repository
         uses: actions/checkout@v2
 
