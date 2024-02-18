@@ -1,0 +1,30 @@
+name: Commit Alerts
+
+on:
+  push:
+    branches:
+      - main  # ajuste o nome da sua branch principal conforme necessário
+
+jobs:
+  send-alert:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send commit alert
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const commits = github.context.payload.commits;
+            const repoName = github.context.payload.repository.full_name;
+            const commitCount = commits.length;
+            
+            // Customize your alert message here
+            const message = `${commitCount} new commit(s) pushed to ${repoName}`;
+            
+            // Post the message as a comment on the commit
+            github.repos.createCommitComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              commit_sha: context.sha,
+              body: message
+            });
