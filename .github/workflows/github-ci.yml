@@ -3,7 +3,7 @@ name: Commit Alerts
 on:
   push:
     branches:
-      - main
+      - main  # ajuste o nome da sua branch principal conforme necessário
 
 jobs:
   send-alert:
@@ -23,8 +23,8 @@ jobs:
             
             // Post the message as a comment on the commit
             github.repos.createCommitComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              commit_sha: context.sha,
+              owner: github.context.repo.owner,
+              repo: github.context.repo.repo,
+              commit_sha: github.context.sha,
               body: message
             });
