@@ -1,29 +1,29 @@
-name: Commit Alerts
-
 on:
   push:
-    branches:
-      - main  # ajuste o nome da sua branch principal conforme necessário
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
+name: Create Release
 
 jobs:
-  send-alert:
+  build:
+    name: Create Release
     runs-on: ubuntu-latest
     steps:
-      - name: Send commit alert
-        uses: actions/github-script@v5
+      - name: Checkout code
+        uses: actions/checkout@master
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const repoName = github.context.repo.repo;
-            const commitCount = commits.length;
-            
-            // Customize your alert message here
-            const message = `${commitCount} new commit(s) pushed to ${repoName}`;
-            
-            // Post the message as a comment on the commit
-            github.repos.createCommitComment({
-              owner: github.context.repo.owner,
-              repo: github.context.repo.repo,
-              commit_sha: github.context.sha,
-              body: message
-            });
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Changes in this Release
+            - First Change
+            - Second Change
+          draft: false
+          prerelease: false
