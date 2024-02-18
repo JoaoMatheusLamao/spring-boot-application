@@ -14,8 +14,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const commits = github.context.payload.commits;
-            const repoName = github.context.payload.repository.full_name;
+            const repoName = github.context.repo.repo;
             const commitCount = commits.length;
             
             // Customize your alert message here
