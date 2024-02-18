@@ -3,7 +3,7 @@ name: Commit Alerts
 on:
   push:
     branches:
-      - main  # ajuste o nome da sua branch principal conforme necessário
+      - main
 
 jobs:
   send-alert:
